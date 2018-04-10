@@ -667,7 +667,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-      return playCardAdventurer(state, currentPlayer)
+      return playCardAdventurer(state, currentPlayer);
 			
     case council_room:
       //+4 Cards
@@ -1337,7 +1337,7 @@ int playCardAdventurer(struct gameState *state, int currentPlayer){
 //Smithy Kingdom card is played
 int playCardSmithy(struct gameState *state, int currentPlayer, int handPos){
   //+3 Cards
-  for (i = 0; i < 3; i++){
+  for (int i = 0; i < 3; i++){
     drawCard(currentPlayer, state);
   }
   //discard card from hand
