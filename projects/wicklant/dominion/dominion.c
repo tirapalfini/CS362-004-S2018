@@ -811,15 +811,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return playCardSmithy(state, currentPlayer, handPos);
 		
     case village:
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+2 Actions
-      state->numActions = state->numActions + 2;
-			
-      //discard played card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+      return playCardVillage(state, currentPlayer, handPos);
 		
     case baron:
       state->numBuys++;//Increase buys by 1!
@@ -884,55 +876,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case minion:
-      //+1 action
-      state->numActions++;
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-			
-      if (choice1)		//+2 coins
-	{
-	  state->coins = state->coins + 2;
-	}
-			
-      else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
-	{
-	  //discard hand
-	  while(numHandCards(state) > 0)
-	    {
-	      discardCard(handPos, currentPlayer, state, 0);
-	    }
-				
-	  //draw 4
-	  for (i = 0; i < 4; i++)
-	    {
-	      drawCard(currentPlayer, state);
-	    }
-				
-	  //other players discard hand and redraw if hand size > 4
-	  for (i = 0; i < state->numPlayers; i++)
-	    {
-	      if (i != currentPlayer)
-		{
-		  if ( state->handCount[i] > 4 )
-		    {
-		      //discard hand
-		      while( state->handCount[i] > 0 )
-			{
-			  discardCard(handPos, i, state, 0);
-			}
-							
-		      //draw 4
-		      for (j = 0; j < 4; j++)
-			{
-			  drawCard(i, state);
-			}
-		    }
-		}
-	    }
-				
-	}
-      return 0;
+      return playCardMinion(state, currentPlayer, handPos, choice1, choice2);
 		
     case steward:
       if (choice1 == 1)
@@ -1110,26 +1054,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 		
     case embargo: 
-      //+2 Coins
-      state->coins = state->coins + 2;
-			
-      //see if selected pile is in play
-      if ( state->supplyCount[choice1] == -1 )
-	{
-	  return -1;
-	}
-			
-      //add embargo token to selected supply pile
-      state->embargoTokens[choice1]++;
-			
-      //trash card
-      discardCard(handPos, currentPlayer, state, 1);		
-      return 0;
-		
+      return playCardEmbargo(state, currentPlayer, handPos);
+ 
     case outpost:
       //set outpost flag
       state->outpostPlayed++;
-			
+      
       //discard card
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
@@ -1339,6 +1269,89 @@ int playCardSmithy(struct gameState *state, int currentPlayer, int handPos){
   }
   //discard card from hand
   discardCard(handPos, currentPlayer, state, 0);
+  return 0;
+}
+
+//Village Kingdom card is played
+int playCardVillage(struct gameState *state, int currentPlayer, int handPos){
+  //+1 Card
+  drawCard(currentPlayer, state);
+  
+  //+2 Actions
+  state->numActions = state->numActions + 2;
+  
+  //discard played card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+  return 0;
+}
+
+int playCardMinion(struct gameState *state, int currentPlayer, int handPos, int choice1, int choice2){
+  //+1 action
+  state->numActions++;
+      
+  //discard card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+      
+  //+2 coins    
+  if (choice1)    
+  {
+    state->coins = state->coins + 2;
+  }
+      
+  //discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
+  else if (choice2)   
+  {
+    //discard hand
+    while(numHandCards(state) > 0)
+      {
+        discardCard(handPos, currentPlayer, state, 0);
+      }
+        
+    //draw 4
+    for (i = 0; i < 4; i++)
+      {
+        drawCard(currentPlayer, state);
+      }
+        
+    //other players discard hand and redraw if hand size > 4
+    for (i = 0; i < state->numPlayers; i++)
+    {
+      if (i != currentPlayer)
+      {
+      if ( state->handCount[i] > 4 )
+        {
+          //discard hand
+          while( state->handCount[i] > 0 )
+          {
+            discardCard(handPos, i, state, 0);
+          }  
+          //draw 4
+          for (j = 0; j < 4; j++)
+          {
+            drawCard(i, state);
+          }
+        }
+      }
+    }     
+  }
+  return 0;
+}
+
+int playCardEmbargo(struct gameState *state, int currentPlayer, int handPos){
+  //+2 Coins
+  state->coins = state->coins + 2;
+      
+  //see if selected pile is in play
+  if ( state->supplyCount[choice1] == -1 )
+  {
+    return -1;
+  }
+      
+  //add embargo token to selected supply pile
+  state->embargoTokens[choice1]++;
+  
+  //trash card
+  discardCard(handPos, currentPlayer, state, 1);    
   return 0;
 }
 
