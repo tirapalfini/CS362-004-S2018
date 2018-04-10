@@ -1054,7 +1054,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 		
     case embargo: 
-      return playCardEmbargo(state, currentPlayer, handPos);
+      return playCardEmbargo(state, currentPlayer, handPos, choice1);
  
     case outpost:
       //set outpost flag
@@ -1308,13 +1308,13 @@ int playCardMinion(struct gameState *state, int currentPlayer, int handPos, int 
       }
         
     //draw 4
-    for (i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
       {
         drawCard(currentPlayer, state);
       }
         
     //other players discard hand and redraw if hand size > 4
-    for (i = 0; i < state->numPlayers; i++)
+    for (int i = 0; i < state->numPlayers; i++)
     {
       if (i != currentPlayer)
       {
@@ -1326,7 +1326,7 @@ int playCardMinion(struct gameState *state, int currentPlayer, int handPos, int 
             discardCard(handPos, i, state, 0);
           }  
           //draw 4
-          for (j = 0; j < 4; j++)
+          for (int j = 0; j < 4; j++)
           {
             drawCard(i, state);
           }
@@ -1337,7 +1337,7 @@ int playCardMinion(struct gameState *state, int currentPlayer, int handPos, int 
   return 0;
 }
 
-int playCardEmbargo(struct gameState *state, int currentPlayer, int handPos){
+int playCardEmbargo(struct gameState *state, int currentPlayer, int handPos, int choice1){
   //+2 Coins
   state->coins = state->coins + 2;
       

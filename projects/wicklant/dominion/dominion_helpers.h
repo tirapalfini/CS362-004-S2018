@@ -13,8 +13,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3,
 	       struct gameState *state, int handPos, int *bonus);
 int playCardAdventurer(struct gameState *state, int currentPlayer);
 int playCardSmithy(struct gameState *state, int currentPlayer, int handPos);
-int playCardVillage(state, currentPlayer, handPos);
+int playCardVillage(struct gameState *state, int currentPlayer, int handPos);
 int playCardMinion(struct gameState *state, int currentPlayer, int handPos, int choice1, int choice2);
-int playCardEmbargo(struct gameState *state, int currentPlayer, int handPos);
+int playCardEmbargo(struct gameState *state, int currentPlayer, int handPos, int choice1);
 
 #endif
