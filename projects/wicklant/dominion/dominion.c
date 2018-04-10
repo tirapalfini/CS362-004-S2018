@@ -1237,10 +1237,11 @@ int playCardAdventurer(struct gameState *state, int currentPlayer){
   int z = 0;// this is the counter for the temp hand
 
   while(drawntreasure<2){
+    //introduce bug - empty deck not shuffled 
     //if the deck is empty we need to shuffle discard and add to deck
-    if (state->deckCount[currentPlayer] <1){
+    /*if (state->deckCount[currentPlayer] <1){
       shuffle(currentPlayer, state);
-    }
+    }*/
     drawCard(currentPlayer, state);
     //top card of hand is most recently drawn card.
     cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];
@@ -1264,7 +1265,8 @@ int playCardAdventurer(struct gameState *state, int currentPlayer){
 //Smithy Kingdom card is played
 int playCardSmithy(struct gameState *state, int currentPlayer, int handPos){
   //+3 Cards
-  for (int i = 0; i < 3; i++){
+  //introduce bug - player is only given 2 cards instead of 3
+  for (int i = 0; i < 2; i++){
     drawCard(currentPlayer, state);
   }
   //discard card from hand
@@ -1274,6 +1276,10 @@ int playCardSmithy(struct gameState *state, int currentPlayer, int handPos){
 
 //Village Kingdom card is played
 int playCardVillage(struct gameState *state, int currentPlayer, int handPos){
+  //+1 Card
+  drawCard(currentPlayer, state);
+  
+  //introduce bug - drawCard function called twice
   //+1 Card
   drawCard(currentPlayer, state);
   
@@ -1328,7 +1334,7 @@ int playCardMinion(struct gameState *state, int currentPlayer, int handPos, int 
           //draw 4
           for (int j = 0; j < 4; j++)
           {
-            drawCard(i, state);
+            drawCard(j, state); //bug introduced - instead of index i (player number) for drawCard, j (card number) is used
           }
         }
       }
