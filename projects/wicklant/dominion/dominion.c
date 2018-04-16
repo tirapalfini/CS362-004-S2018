@@ -1264,9 +1264,10 @@ int playCardAdventurer(struct gameState *state, int currentPlayer){
 
 //Smithy Kingdom card is played
 int playCardSmithy(struct gameState *state, int currentPlayer, int handPos){
+  int i;
   //+3 Cards
   //introduce bug - player is only given 2 cards instead of 3
-  for (int i = 0; i < 2; i++){
+  for (i = 0; i < 2; i++){
     drawCard(currentPlayer, state);
   }
   //discard card from hand
@@ -1292,6 +1293,8 @@ int playCardVillage(struct gameState *state, int currentPlayer, int handPos){
 }
 
 int playCardMinion(struct gameState *state, int currentPlayer, int handPos, int choice1, int choice2){
+  int i;
+  int j;
   //+1 action
   state->numActions++;
       
@@ -1314,13 +1317,13 @@ int playCardMinion(struct gameState *state, int currentPlayer, int handPos, int 
       }
         
     //draw 4
-    for (int i = 0; i < 4; i++)
+    for (i = 0; i < 4; i++)
       {
         drawCard(currentPlayer, state);
       }
         
     //other players discard hand and redraw if hand size > 4
-    for (int i = 0; i < state->numPlayers; i++)
+    for (i = 0; i < state->numPlayers; i++)
     {
       if (i != currentPlayer)
       {
@@ -1332,7 +1335,7 @@ int playCardMinion(struct gameState *state, int currentPlayer, int handPos, int 
             discardCard(handPos, i, state, 0);
           }  
           //draw 4
-          for (int j = 0; j < 4; j++)
+          for (j = 0; j < 4; j++)
           {
             drawCard(j, state); //bug introduced - instead of index i (player number) for drawCard, j (card number) is used
           }
