@@ -1,5 +1,3 @@
-/* numHandCards test */
-
 #include "dominion.h"
 #include <stdio.h>
 #include "rngs.h"
@@ -19,7 +17,7 @@ int main (int argc, char** argv) {
 
     initializeGame(numPlayers, k, seed, &G);
 
-	printf("Testing numHandCards\n");
+	printf("--------TESTING numHandCards Function--------\n");
 
 	//empty hand - boundary case
 	expectedHand = 0;
@@ -27,8 +25,9 @@ int main (int argc, char** argv) {
 	{
 		G.handCount[player] = 0;
 		int currentHandCards = numHandCards(&G);
+		printf("\tTest empty hand: ");
+		printf("Player %d has %d cards\t", player, currentHandCards);
 		assertTrue(expectedHand == currentHandCards);
-		printf("Player %d has %d cards\n", player, currentHandCards);
 		endTurn(&G);
 	}
 
@@ -37,8 +36,9 @@ int main (int argc, char** argv) {
 	for (player = 0; player < G.numPlayers; player++)
 	{
 		int currentHandCards = numHandCards(&G);
+		printf("\tTest 5 cards in hand: ");
+		printf("Player %d has %d cards\t", player, currentHandCards);
 		assertTrue(expectedHand == currentHandCards);
-		printf("Player %d has %d cards\n", player, currentHandCards);
 		endTurn(&G);
 	}
 
@@ -48,14 +48,18 @@ int main (int argc, char** argv) {
 	{
 		G.handCount[player] = MAX_HAND;
 		int currentHandCards = numHandCards(&G);
+		printf("\tTest max cards in hand: ");
+		printf("Player %d has %d cards\t", player, currentHandCards);
 		assertTrue(expectedHand == currentHandCards);
-		printf("Player %d has %d cards\n", player, currentHandCards);
 		endTurn(&G);
 	}
 
-    if (pass == 0){
-    	printf("All tests passed!\n");
-    }
+	if (pass == 0)
+    	printf("All tests successfully passed!\n\n");
+    else
+    	printf("\n");
+
+    return 0;
 
 }
 
@@ -63,10 +67,10 @@ int assertTrue(int test)
 {
 	if (test)
 	{
-		printf("PASS: ");
+		printf("PASS\n");
 		return 0;
 	}
 	
-	printf("FAIL: ");
+	printf("FAIL\n");
 	return 1;
 }

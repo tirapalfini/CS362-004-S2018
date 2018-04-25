@@ -1,5 +1,3 @@
-/* kingdomCards */
-
 #include "dominion.h"
 #include <stdio.h>
 #include "rngs.h"
@@ -10,6 +8,8 @@ int assertTrue(int test);
 int main (int argc, char** argv) {
 	int pass = 0;
 
+    printf("--------TESTING kingdomCards Function --------\n");
+
 	int expected[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
         sea_hag, tribute, smithy};
 
@@ -17,30 +17,31 @@ int main (int argc, char** argv) {
         sea_hag, tribute, smithy);
 
     int i;
-
+    printf("\tTest positions of cards:\n");
     for (i = 0; i < 10; i++)
     {
-    	pass += assertTrue(expected[i] == cardsArray[i]);
-    	printf("position %d\n", i);
+    	printf("\t\tPosition %d: Expected = %d Actual = %d:\t ", i, expected[i], cardsArray[i]);
+        pass += assertTrue(expected[i] == cardsArray[i]);
 
     }
 
     if (pass == 0)
-    {
-    	printf("All test successfully passed\n");
-    }
+        printf("All tests successfully passed!\n\n");
+    else
+        printf("\n");
 
+    return 0;
 }
 
 int assertTrue(int test)
 {
 	if (test)
 	{
-		printf("PASS: ");
+		printf("PASS\n");
 		return 0;
 	}
 	
-	printf("FAIL: ");
+	printf("FAIL\n");
 	return 1;
 }
 

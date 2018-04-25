@@ -1,5 +1,3 @@
-/* WhoseTurn test */
-
 #include "dominion.h"
 #include <stdio.h>
 #include "rngs.h"
@@ -18,7 +16,7 @@ int main (int argc, char** argv) {
     int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
         sea_hag, tribute, smithy};
 
-    printf ("TESTING WhoseTurn():\n");
+    printf ("--------TESTING WhoseTurn Function--------\n");
 
     initializeGame(numPlayer, k, seed, &G);
 
@@ -27,22 +25,26 @@ int main (int argc, char** argv) {
 	   	//Begin turn
 	   	currentPlayer = whoseTurn(&G);
 	    expectedPlayer = i;
+	    printf("\tPlayer %d begins turn: ", i + 1);
 	    pass += assertTrue(expectedPlayer == currentPlayer);
-	    printf("Player %d beginning turn\n", currentPlayer);
+	    printf("\t\tPlayer Expected = %d Actual = %d\n", expectedPlayer +1, currentPlayer +1);
 
 	    //Play card
 	    G.hand[currentPlayer][0] = smithy;
 	    playCard(0, 0, 0, 0, &G);
 	    currentPlayer = whoseTurn(&G);
+	    printf("\tPlayer %d played card: ", i + 1);
 	    pass += assertTrue(expectedPlayer == currentPlayer);
-	    printf("Player %d played card\n", currentPlayer);
+	    printf("\t\tPlayer Expected = %d Actual = %d\n", expectedPlayer +1, currentPlayer +1);
+	    
 
 	    //Buy card
 	    G.hand[currentPlayer][1] = gold;
 	    buyCard(silver, &G);
 	    currentPlayer = whoseTurn(&G);
+	    printf("\tPlayer %d bought card: ", i + 1);
 	    pass += assertTrue(expectedPlayer == currentPlayer);
-	    printf("Player %d bought card\n", currentPlayer);
+	    printf("\t\tPlayer Expected = %d Actual = %d\n", expectedPlayer +1, currentPlayer +1);
 
 	    //End turn
 	    endTurn(&G);
@@ -51,22 +53,26 @@ int main (int argc, char** argv) {
     //Begin player 1 again
     expectedPlayer = 0;
     currentPlayer = whoseTurn(&G);
+    printf("\tPlayer %d beginning turn again: ", (i % 2) + 1);
     pass += assertTrue(expectedPlayer == currentPlayer);
-	printf("Player %d beginning turn again\n", currentPlayer);
+	printf("\t\tExpected = %d Actual = %d\n", expectedPlayer +1, currentPlayer+1);
 
-    if (pass == 0){
-		printf("All tests passed!\n");
-    }
+	if (pass == 0)
+    	printf("All tests successfully passed!\n\n");
+    else
+    	printf("\n");
+
+    return 0;
 }
 
 int assertTrue(int test)
 {
 	if (test)
 	{
-		printf("PASS: ");
+		printf("PASS\n");
 		return 0;
 	}
 	
-	printf("FAIL: ");
+	printf("FAIL\n");
 	return 1;
 }
