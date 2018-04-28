@@ -53,7 +53,7 @@ int main (int argc, char** argv) {
     	printf("All tests successfully passed!\n\n");
     }
     else
-    	printf("\n");
+    	printf("Some tests failed\n\n");
 
     return 0;
 

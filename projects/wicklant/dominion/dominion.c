@@ -1334,10 +1334,10 @@ int playCardMinion(struct gameState *state, int currentPlayer, int handPos, int 
           {
             discardCard(handPos, i, state, 0);
           }  
-          //draw 4
-          for (j = 0; j < 4; j++)
+          //draw 4 
+          for (j = 0; j < 3; j++) //changed bug to only draw 3 cards for opponents
           {
-            drawCard(j, state); //bug introduced - instead of index i (player number) for drawCard, j (card number) is used
+            drawCard(i, state); //bug corrected at recommendation of Professor Aburas due to always causing segfaut
           }
         }
       }

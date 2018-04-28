@@ -1,78 +1,111 @@
 #include "dominion.h"
 #include <stdio.h>
 #include "rngs.h"
+#include <string.h>
 #include <stdlib.h>
 
 int assertTrue(int test);
+void isOver(int number);
 
 int main (int argc, char** argv) {
-	int pass = 0;
-	int expectedPlayer;
-	int currentPlayer;
-	int numPlayer = 2;
-	int seed = 1000;
-    struct gameState G;
-    int i;
-    int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
+
+  int pass = 0;
+  int numPlayer = 2;
+  int seed = 1000;
+  int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
         sea_hag, tribute, smithy};
+  struct gameState G;
+  struct gameState test1;
+  struct gameState test2;
+  struct gameState test3;
+  struct gameState test4;
+  int actual;
+  int i;
 
-    printf ("--------TESTING WhoseTurn Function--------\n");
+  initializeGame(numPlayer, k, seed, &G);
 
-    initializeGame(numPlayer, k, seed, &G);
+  printf("--------TESTING isGameOver Function --------\n");
+  
+  //Testing empty province stack
+  memcpy(&test1, &G, sizeof(struct gameState));
+  printf("\tProvince cards is empty: ");
+  test1.supplyCount[province] = 0;
+  actual = isGameOver(&test1);
+  pass += assertTrue(1 == actual);
+  printf("\t\tExpected: "); 
+  isOver(1); 
+  printf(" Actual: ");
+  isOver(actual);
+  printf("\n");
 
-    for (i = 0; i < numPlayer; i++)
-    {
-	   	//Begin turn
-	   	currentPlayer = whoseTurn(&G);
-	    expectedPlayer = i;
-	    printf("\tPlayer %d begins turn: ", i + 1);
-	    pass += assertTrue(expectedPlayer == currentPlayer);
-	    printf("\t\tPlayer Expected = %d Actual = %d\n", expectedPlayer +1, currentPlayer +1);
+  //Testing non-empty province stack
+  memcpy(&test2, &G, sizeof(struct gameState));
+  printf("\tProvince cards is not empty: ");
+  test2.supplyCount[province] = 1;
+  actual = isGameOver(&test2);
+  pass += assertTrue(0 == actual);
+  printf("\t\tExpected: "); 
+  isOver(0); 
+  printf(" Actual: ");
+  isOver(actual);
+  printf("\n");
 
-	    //Play card
-	    G.hand[currentPlayer][0] = smithy;
-	    playCard(0, 0, 0, 0, &G);
-	    currentPlayer = whoseTurn(&G);
-	    printf("\tPlayer %d played card: ", i + 1);
-	    pass += assertTrue(expectedPlayer == currentPlayer);
-	    printf("\t\tPlayer Expected = %d Actual = %d\n", expectedPlayer +1, currentPlayer +1);
-	    
+  //Testing with 3 empty supply piles
+  memcpy(&test3, &G, sizeof(struct gameState));
+  printf("\t3 supply piles are empty: ");
+  for(i = 0; i < 3; i++)
+  {
+    test3.supplyCount[i] = 0;
+  }
+  actual = isGameOver(&test3);
+  pass += assertTrue(1 == actual);
+  printf("\t\tExpected: "); 
+  isOver(1); 
+  printf(" Actual: ");
+  isOver(actual);
+  printf("\n");
 
-	    //Buy card
-	    G.hand[currentPlayer][1] = gold;
-	    buyCard(silver, &G);
-	    currentPlayer = whoseTurn(&G);
-	    printf("\tPlayer %d bought card: ", i + 1);
-	    pass += assertTrue(expectedPlayer == currentPlayer);
-	    printf("\t\tPlayer Expected = %d Actual = %d\n", expectedPlayer +1, currentPlayer +1);
+  //Testing with no empty supply piles
+  memcpy(&test4, &G, sizeof(struct gameState));  
+  printf("\tNo supply piles are empty: ");
+  for(i = 0; i < 25; i++)
+  {
+    test4.supplyCount[i] = 1;
+  }
+  actual = isGameOver(&test4);
+  pass += assertTrue(0 == actual);
+  printf("\t\tExpected: "); 
+  isOver(0); 
+  printf(" Actual: ");
+  isOver(actual);
+  printf("\n");
 
-	    //End turn
-	    endTurn(&G);
-    }
+  if (pass == 0)
+      printf("All tests successfully passed!\n\n");
+  else
+      printf("Some tests failed\n\n");
 
-    //Begin player 1 again
-    expectedPlayer = 0;
-    currentPlayer = whoseTurn(&G);
-    printf("\tPlayer %d beginning turn again: ", (i % 2) + 1);
-    pass += assertTrue(expectedPlayer == currentPlayer);
-	printf("\t\tExpected = %d Actual = %d\n", expectedPlayer +1, currentPlayer+1);
-
-	if (pass == 0)
-    	printf("All tests successfully passed!\n\n");
-    else
-    	printf("\n");
-
-    return 0;
+  return 0;
 }
 
 int assertTrue(int test)
 {
-	if (test)
-	{
-		printf("PASS\n");
-		return 0;
-	}
-	
-	printf("FAIL\n");
-	return 1;
+  if (test)
+  {
+    printf("PASS\n");
+    return 0;
+  }
+  
+  printf("FAIL\n");
+  return 1;
+}
+
+void isOver(int number)
+{
+  if(number == 1)
+  {
+    printf("game is over");
+  }
+  else
+    printf("game continues");
 }

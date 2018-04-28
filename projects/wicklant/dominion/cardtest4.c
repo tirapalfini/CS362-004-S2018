@@ -17,7 +17,7 @@ int main (int argc, char** argv) {
 	struct gameState G;
 	struct gameState test1;
 	struct gameState test2;
-	//struct gameState test3;
+	struct gameState test3;
 	int choice1 = 0;
 	int choice2 = 0;
 	int choice3 = 0;
@@ -28,7 +28,7 @@ int main (int argc, char** argv) {
 	int j;
 	int handChanged = 0;
 	int opponentHandsChanged = 0;
-	//int fourCardsNotDrawn = 0;
+	int fourCardsNotDrawn = 0;
 
 	initializeGame(numPlayers, k, seed, &G);
 
@@ -47,8 +47,7 @@ int main (int argc, char** argv) {
 	pass += assertTrue(expectedCoin == test1.coins);
 	printf("\t\tExpected = %d Actual = %d\n", expectedCoin, test1.coins);
 
-	printf("TESTING Choice 2:\n");
-	//printf("TESTING CHOICE 2 with opponents' hands < 5\n");
+	printf("TESTING Choice 2 with opponents' hand count < 5:\n");
 
 	//Test if new cards have been drawn for player only with choice2 
 	memcpy(&test2, &G, sizeof(struct gameState));
@@ -113,7 +112,7 @@ int main (int argc, char** argv) {
 	pass += assertTrue(opponentHandsChanged == 0);
 
 
-	/*printf("TEST CHOICE2 with opponents hand count 5\n");
+	printf("TESTING Choice 2 with opponents hand count 5\n");
 
 	//Test choice2 with opponents having 5 cards in hand
 	memcpy(&test3, &G, sizeof(struct gameState));
@@ -134,9 +133,9 @@ int main (int argc, char** argv) {
 		}
 	}
 
+	printf("\tThe minion card was played with choice 2: ");
 	pass += assertTrue(cardEffect(minion, choice1, choice2, choice3, &test3, handPos, &bonus) == 0);
-	printf("the minion card was played with choice 2\n");
-
+	
 	//Check if the currentPlayer's hand has changed
 	for (i = 0; i < numHandCards(&test3); i++)
 	{
@@ -154,7 +153,7 @@ int main (int argc, char** argv) {
 				if (oldHand[i][j] != test3.hand[i][j])
 				{
 					opponentHandsChanged++;
-					continue;
+					break;
 				}
 
 			}
@@ -169,23 +168,22 @@ int main (int argc, char** argv) {
 			fourCardsNotDrawn = 1;
 	}
 
+	printf("\t\tThe old hand discarded for current player: ");
 	pass += assertTrue(handChanged == 1);
-	printf("old hand discarded for current player\n");
 
+	printf("\t\t4 new cards drawn for current player: ");
 	pass += assertTrue(numHandCards(&test2) == 4);
-	printf("4 new cards drawn for current player\n");
 
+	printf("\t\tOpponents hands have all changed: ");
 	pass += assertTrue(opponentHandsChanged == (test3.numPlayers -1));
-	printf("Opponents hands have all changed\n");
 
+	printf("\t\tEach opponent has drawn 4 cards: ");
 	pass += assertTrue(fourCardsNotDrawn == 0);
-	printf("Each opponent has drawn 4 cards\n");
-*/
 
 	if (pass == 0)
     	printf("All tests successfully passed!\n\n");
     else
-    	printf("\n");
+    	printf("Some tests failed\n\n");
 
     return 0;
 }
