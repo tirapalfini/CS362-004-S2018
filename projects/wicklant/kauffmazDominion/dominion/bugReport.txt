@@ -5,7 +5,7 @@ Date: 05/20/18
 Reported by: Tira Palfini
 Email: wicklant@oregonstate.edu
 Product: Dominion 
-Affected Version: kauffmaz-assignment-4
+Affected Version: kauffmaz-assignment-2
 Platform: OSX 10.10.5 and Flip2 server (OSU)
 Is it reproducible: Yes
 Description: The number of cards added to the hand is incorrect every time the function is called. It failed to correctly update the hand with 2 treasure cards in every of the 1000 calls
@@ -15,8 +15,6 @@ Expected Results: Adventurer card was played successfully: 1000 of 1000 times
 Actual Results: Adventurer card was played successfully: 1000 of 1000 times
 2 treasure cards were added to hand: 0 of 1000 times
 Workarounds: None. The bug will need to be fixed for the function to correctly add 2 treasure cards to the player’s hand. 
-Fixed Version: wicklant-assignment-5
-Updated: 05/21/2018
 
 -----BUG REPORT 2-----
 Title: Hand is not correctly updated with smithy card
@@ -25,7 +23,7 @@ Date: 05/20/2018
 Reported by: Tira Palfini
 Email: wicklant@oregonstate.edu
 Product: Dominion 
-Affected Version: kauffmaz-assignment-4
+Affected Version: kauffmaz-assignment-2
 Platform: OSX 10.10.5 and Flip2 server (OSU)
 Is it reproducible: Yes
 Description: The number of cards added to the hand is incorrect every time the smithy function is called. It failed to correctly update the hand with 3 cards in every of the 1000 calls
